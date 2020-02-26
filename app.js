@@ -1,10 +1,17 @@
-const bodyParser = require('body-parser');
 const explress = require('express');
-
-const cors   = require('cors');         // прием кросдомемных запросов
-const morgan = require('morgan');       // файный логер
+const bodyParser = require('body-parser');  // parse запросов
+const cors   = require('cors');             // прием кросдомемных запросов
+const morgan = require('morgan');           // файный логер
+const mongoose = require('mongoose');
+const DB_connect = require('./config/config').mongoDB;
 
 const app = explress();
+
+mongoose.connect(DB_connect, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then( ()=>{ console.log( `-- DB connect - Ok` ); })
+  .catch( (error)=>{ console.log( error ); });
 
 const analiticsRouth = require('./routs/analitics');
 const authRouth = require('./routs/auth');
