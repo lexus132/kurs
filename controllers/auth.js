@@ -5,16 +5,13 @@ const confoKey = require('../config/config').jwt;
 const errorHandler = require('../utils/errorHandler');
 
 module.exports.login = async function(req,res){
-
     if(!req.body.email || req.body.email.length == 0){
         res.status(409).json({message:"Email is required params"});
     }
     if(!req.body.password){
         res.status(409).json({message:"Password is required params"});
     }
-
     const candidat = await User.findOne({ email : req.body.email });
-
     if(candidat){
         const passwordRes = bcrypt.compareSync(req.body.password, candidat.password);
         if(passwordRes){
@@ -24,26 +21,19 @@ module.exports.login = async function(req,res){
                 userId : candidat._id,
             }, confoKey, { expiresIn: 3600 });
             res.status(200).json({
-                token : `Bearer ${token}`
+                token : `Bearer ${token}`                           // add to header like  "Authorization"
             });
         } else {
             // 401
-            res.status(401).json({message:"User no finde"});
+            res.status(401).json({message:"User not finde"});
         }
     } else {
         // 404
-        res.status(404).json({message:"User no finde"});
+        res.status(404).json({message:"User not finde"});
     }
 }
 
 module.exports.registre = async function(req,res){
-    // const user = new User({
-    //     email : req.body.email,
-    //     password : req.body.password
-    // });
-    // user.save().then( ()=>{ console.log( `user created` ); });
-    // res.status(200).json(user);
-
     if(!req.body.email || req.body.email.length == 0){
         res.status(409).json({message:"Email is required params"});
     }
@@ -53,15 +43,12 @@ module.exports.registre = async function(req,res){
     if(req.body.password.length < 6){
         res.status(409).json({message:"Min length for password 6 chars"});
     }
-
     const candidat = await User.findOne({email : req.body.email });
-
     if(candidat){
-        // exist!
+        // olredy exist!
         res.status(409).json({message:"Email already exist"});
     } else {
         // create
-
         const sole = bcrypt.genSaltSync(10);
         const password = req.body.password;
 

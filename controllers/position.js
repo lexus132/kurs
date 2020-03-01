@@ -12,7 +12,6 @@ module.exports.getByCategoryId = async function(req,res){
         errorHandler(res, e);
     }
 }
-
 module.exports.create = async function(req,res){
     try{
         const position = await new Position({
@@ -26,7 +25,6 @@ module.exports.create = async function(req,res){
         errorHandler(res, e);
     }
 }
-
 module.exports.remove =async function(req,res){
     try{
         await Position.remove({
@@ -39,7 +37,6 @@ module.exports.remove =async function(req,res){
         errorHandler(res, e);
     }
 }
-
 module.exports.update = async function(req,res){
     try{
         const position = await Position.findOneAndUpdate({
